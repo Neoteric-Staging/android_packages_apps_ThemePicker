@@ -313,7 +313,10 @@ abstract class ThemePickerAppModule {
         @Provides
         @Singleton
         fun provideFlags(): BaseFlags {
-            return object : BaseFlags() {}
+            return object : BaseFlags() {
+                // Force-enable updated color picker (incl. freeform hue picker).
+                override fun isColorPickerUpdateEnabled() = true
+            }
         }
 
         @Provides
