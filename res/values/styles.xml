@@ -159,4 +159,16 @@
         <item name="android:gravity">center</item>
     </style>
 
+
+    <!-- FundamentalOS: let the live page surface show through the status bar.
+         CustomizationPickerActivity2 is edge-to-edge and its fragment_container
+         background is driven live by ColorUpdateBinder (colorSurfaceContainer),
+         but the base WallpaperTheme paints an opaque statusBarColor resolved once
+         at window creation, so on an in-app theme change (configChanges of
+         assetsPaths, no recreate) the bar keeps the old color while the body
+         updates. A transparent bar shows the live surface behind it, fixing both
+         the seam and the stale color (WallpaperPreviewActivity does the same). -->
+    <style name="FundamentalWallpaperTheme" parent="@style/WallpaperTheme">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
 </resources>

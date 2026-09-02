@@ -91,7 +91,7 @@
             android:relinquishTaskIdentity="true"
             android:screenOrientation="portrait"
             android:resizeableActivity="false"
-            android:theme="@style/WallpaperTheme"
+            android:theme="@style/FundamentalWallpaperTheme"
             android:configChanges="assetsPaths|uiMode"
             android:exported="false"/>
 
