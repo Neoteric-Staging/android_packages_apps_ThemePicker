@@ -42,6 +42,6 @@
         <item>com.android.vending</item>
     </array>
 
-    <!-- Package name of the Camera app to be used when previewing icon shape and theme -->
-    <string name="camera_package" translatable="false">com.android.camera2</string>
+    <!-- Package name of the app to be used when previewing icon shape and theme -->
+    <string name="camera_package" translatable="false">com.android.settings</string>
 </resources>

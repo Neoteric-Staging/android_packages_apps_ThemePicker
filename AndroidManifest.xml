@@ -28,9 +28,6 @@
         <package android:name="com.android.launcher3"/>
         <package android:name="com.android.settings"/>
         <package android:name="com.android.systemui"/>
-        <!-- Package of camera for icon shape -->
-        <package android:name="com.android.camera2" />
-        <package android:name="com.google.android.desktop.camera" />
 
         <!-- Specific intents Wallpaper picker query for -->
         <!-- Package for theme stub -->
