@@ -148,8 +148,18 @@ object AppIconFloatingSheetBinder {
         val themedIconBetaLabel = view.requireViewById<TextView>(R.id.themed_icon_beta_title)
         val showAppLabelsTitle = view.requireViewById<TextView>(R.id.show_app_labels_title)
         val showAppLabelsSwitch = view.requireViewById<MaterialSwitch>(R.id.show_app_labels_switch)
+        val showAppDrawerLabelsTitle =
+            view.requireViewById<TextView>(R.id.show_app_drawer_labels_title)
+        val showAppDrawerLabelsSwitch =
+            view.requireViewById<MaterialSwitch>(R.id.show_app_drawer_labels_switch)
         ColorUpdateBinder.bind(
             setColor = { color -> showAppLabelsTitle.setTextColor(color) },
+            color = colorUpdateViewModel.colorOnSurface,
+            shouldAnimate = isFloatingSheetActive,
+            lifecycleOwner = lifecycleOwner,
+        )
+        ColorUpdateBinder.bind(
+            setColor = { color -> showAppDrawerLabelsTitle.setTextColor(color) },
             color = colorUpdateViewModel.colorOnSurface,
             shouldAnimate = isFloatingSheetActive,
             lifecycleOwner = lifecycleOwner,
@@ -338,6 +348,30 @@ object AppIconFloatingSheetBinder {
                     launch {
                         viewModel.toggleShouldShowAppLabels.collect {
                             showAppLabelsSwitch.setOnCheckedChangeListener { _, _ -> it.invoke() }
+                        }
+                    }
+
+                    launch {
+                        var switchBinding: SwitchColorBinder.Binding? = null
+                        viewModel.previewingShouldShowAppDrawerLabels.collect {
+                            showAppDrawerLabelsSwitch.isChecked = it
+                            switchBinding?.destroy()
+                            switchBinding =
+                                SwitchColorBinder.bind(
+                                    switch = showAppDrawerLabelsSwitch,
+                                    isChecked = it,
+                                    colorUpdateViewModel = colorUpdateViewModel,
+                                    shouldAnimateColor = isFloatingSheetActive,
+                                    lifecycleOwner = lifecycleOwner,
+                                )
+                        }
+                    }
+
+                    launch {
+                        viewModel.toggleShouldShowAppDrawerLabels.collect {
+                            showAppDrawerLabelsSwitch.setOnCheckedChangeListener { _, _ ->
+                                it.invoke()
+                            }
                         }
                     }
                 } else {

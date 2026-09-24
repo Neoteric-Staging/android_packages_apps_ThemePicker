@@ -53,6 +53,8 @@ constructor(
 
     val shouldShowAppLabels: Flow<Boolean> = iconStyleRepository.shouldShowAppLabels
 
+    val shouldShowAppDrawerLabels: Flow<Boolean> = iconStyleRepository.shouldShowAppDrawerLabels
+
     suspend fun applyThemedIconEnabled(enabled: Boolean) =
         iconStyleRepository.setThemedIconEnabled(enabled)
 
@@ -63,4 +65,7 @@ constructor(
 
     suspend fun applyShouldShowAppLabels(shouldShowAppLabels: Boolean) =
         iconStyleRepository.setShouldShowAppLabels(shouldShowAppLabels)
+
+    suspend fun applyShouldShowAppDrawerLabels(shouldShowAppDrawerLabels: Boolean) =
+        iconStyleRepository.setShouldShowAppDrawerLabels(shouldShowAppDrawerLabels)
 }

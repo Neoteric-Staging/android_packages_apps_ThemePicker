@@ -151,31 +151,65 @@
             android:id="@+id/app_icon_label_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:visibility="invisible"
             android:paddingHorizontal="@dimen/floating_sheet_content_horizontal_padding"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/CustomizationOptionEntryTitleTextStyle"
-                android:id="@+id/show_app_labels_title"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/show_app_names"
-                android:layout_marginEnd="@dimen/floating_sheet_clock_style_clock_size_text_margin_end"
-                android:importantForAccessibility="no" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <com.google.android.material.materialswitch.MaterialSwitch
-                style="@style/SettingslibSwitchStyle.Expressive"
-                android:id="@+id/show_app_labels_switch"
-                android:layout_width="wrap_content"
+                <TextView
+                    style="@style/CustomizationOptionEntryTitleTextStyle"
+                    android:id="@+id/show_app_labels_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/show_app_names"
+                    android:layout_marginEnd="@dimen/floating_sheet_clock_style_clock_size_text_margin_end"
+                    android:importantForAccessibility="no" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    style="@style/SettingslibSwitchStyle.Expressive"
+                    android:id="@+id/show_app_labels_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/show_app_names"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:theme="@style/Theme.Material3.DynamicColors.DayNight" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:contentDescription="@string/show_app_names"
-                android:clickable="true"
-                android:focusable="true"
-                android:theme="@style/Theme.Material3.DynamicColors.DayNight" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/CustomizationOptionEntryTitleTextStyle"
+                    android:id="@+id/show_app_drawer_labels_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/show_app_names_in_app_drawer"
+                    android:layout_marginEnd="@dimen/floating_sheet_clock_style_clock_size_text_margin_end"
+                    android:importantForAccessibility="no" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    style="@style/SettingslibSwitchStyle.Expressive"
+                    android:id="@+id/show_app_drawer_labels_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:contentDescription="@string/show_app_names_in_app_drawer"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:theme="@style/Theme.Material3.DynamicColors.DayNight" />
+            </LinearLayout>
         </LinearLayout>
     </FrameLayout>
 

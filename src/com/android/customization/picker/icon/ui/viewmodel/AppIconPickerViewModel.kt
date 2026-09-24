@@ -160,6 +160,24 @@ constructor(
     val toggleShouldShowAppLabels: Flow<() -> Unit> =
         previewingShouldShowAppLabels.map { { overridingShouldShowAppLabels.value = !it } }
 
+    private val overridingShouldShowAppDrawerLabels = MutableStateFlow<Boolean?>(null)
+    private val shouldShowAppDrawerLabels: SharedFlow<Boolean> =
+        interactor.shouldShowAppDrawerLabels.shareIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            replay = 1,
+        )
+    val previewingShouldShowAppDrawerLabels: Flow<Boolean> =
+        combine(overridingShouldShowAppDrawerLabels, shouldShowAppDrawerLabels) {
+            overridingShowAppDrawerLabels,
+            showAppDrawerLabels ->
+            overridingShowAppDrawerLabels ?: showAppDrawerLabels
+        }
+    val toggleShouldShowAppDrawerLabels: Flow<() -> Unit> =
+        previewingShouldShowAppDrawerLabels.map {
+            { overridingShouldShowAppDrawerLabels.value = !it }
+        }
+
     enum class Tab {
         STYLE,
         SHAPE,
@@ -346,6 +364,8 @@ constructor(
             isThemedIconEnabled,
             overridingShouldShowAppLabels,
             shouldShowAppLabels,
+            overridingShouldShowAppDrawerLabels,
+            shouldShowAppDrawerLabels,
         ) { args: Array<Any?> ->
             val overridingShapeKey = args[0] as String?
             val selectedShape = args[1] as OptionItemViewModel2<ShapeIconViewModel>
@@ -353,6 +373,8 @@ constructor(
             val currentIsThemedIconEnabled = args[3] as Boolean
             val overridingShouldShowAppLabels = args[4] as Boolean?
             val shouldShowAppLabels = args[5] as Boolean
+            val overridingShouldShowAppDrawerLabels = args[6] as Boolean?
+            val shouldShowAppDrawerLabels = args[7] as Boolean
 
             val shapeNeedsUpdate =
                 overridingShapeKey != null && overridingShapeKey != selectedShape.key.value
@@ -362,7 +384,15 @@ constructor(
             val shouldShowAppLabelsNeedsUpdate =
                 overridingShouldShowAppLabels != null &&
                     overridingShouldShowAppLabels != shouldShowAppLabels
-            if (shapeNeedsUpdate || themedIconNeedsUpdate || shouldShowAppLabelsNeedsUpdate) {
+            val shouldShowAppDrawerLabelsNeedsUpdate =
+                overridingShouldShowAppDrawerLabels != null &&
+                    overridingShouldShowAppDrawerLabels != shouldShowAppDrawerLabels
+            if (
+                shapeNeedsUpdate ||
+                    themedIconNeedsUpdate ||
+                    shouldShowAppLabelsNeedsUpdate ||
+                    shouldShowAppDrawerLabelsNeedsUpdate
+            ) {
                 {
                     if (shapeNeedsUpdate) {
                         overridingShapeKey?.let {
@@ -389,6 +419,11 @@ constructor(
                             // TODO(b/456634299): log apply should show app labels
                         }
                     }
+                    if (shouldShowAppDrawerLabelsNeedsUpdate) {
+                        overridingShouldShowAppDrawerLabels?.let {
+                            interactor.applyShouldShowAppDrawerLabels(it)
+                        }
+                    }
                 }
             } else {
                 null
@@ -403,6 +438,8 @@ constructor(
             selectedIconStyle,
             overridingShouldShowAppLabels,
             shouldShowAppLabels,
+            overridingShouldShowAppDrawerLabels,
+            shouldShowAppDrawerLabels,
         ) { args: Array<Any?> ->
             val overridingShapeKey = args[0] as String?
             val selectedShape = args[1] as OptionItemViewModel2<ShapeIconViewModel>
@@ -410,6 +447,8 @@ constructor(
             val currentIconStyle = args[3] as IconStyle
             val overridingShouldShowAppLabels = args[4] as Boolean?
             val shouldShowAppLabels = args[5] as Boolean
+            val overridingShouldShowAppDrawerLabels = args[6] as Boolean?
+            val shouldShowAppDrawerLabels = args[7] as Boolean
 
             val shapeNeedsUpdate =
                 overridingShapeKey != null && overridingShapeKey != selectedShape.key.value
@@ -418,7 +457,15 @@ constructor(
             val showAppLabelsNeedsUpdate =
                 overridingShouldShowAppLabels != null &&
                     overridingShouldShowAppLabels != shouldShowAppLabels
-            if (shapeNeedsUpdate || styleNeedsUpdate || showAppLabelsNeedsUpdate) {
+            val showAppDrawerLabelsNeedsUpdate =
+                overridingShouldShowAppDrawerLabels != null &&
+                    overridingShouldShowAppDrawerLabels != shouldShowAppDrawerLabels
+            if (
+                shapeNeedsUpdate ||
+                    styleNeedsUpdate ||
+                    showAppLabelsNeedsUpdate ||
+                    showAppDrawerLabelsNeedsUpdate
+            ) {
                 {
                     if (shapeNeedsUpdate) {
                         overridingShapeKey?.let {
@@ -461,6 +508,11 @@ constructor(
                             interactor.applyShouldShowAppLabels(it)
                         }
                     }
+                    if (showAppDrawerLabelsNeedsUpdate) {
+                        overridingShouldShowAppDrawerLabels?.let {
+                            interactor.applyShouldShowAppDrawerLabels(it)
+                        }
+                    }
                 }
             } else {
                 null
@@ -471,6 +523,7 @@ constructor(
         overridingShapeKey.value = null
         overridingIsThemedIconEnabled.value = null
         overridingShouldShowAppLabels.value = null
+        overridingShouldShowAppDrawerLabels.value = null
         _selectedTab.value = Tab.STYLE
     }
 
@@ -478,6 +531,7 @@ constructor(
         overridingShapeKey.value = null
         overridingIconStyle.value = null
         overridingShouldShowAppLabels.value = null
+        overridingShouldShowAppDrawerLabels.value = null
         _selectedTab.value = Tab.STYLE
     }
 

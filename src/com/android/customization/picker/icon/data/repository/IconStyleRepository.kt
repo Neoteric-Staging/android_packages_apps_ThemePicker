@@ -53,4 +53,10 @@ interface IconStyleRepository {
 
     /** Apply the update to the system settings to show or hide the home screen app labels. */
     suspend fun setShouldShowAppLabels(shouldShowAppLabels: Boolean)
+
+    /** Whether app labels are shown in the app drawer. */
+    val shouldShowAppDrawerLabels: Flow<Boolean>
+
+    /** Apply the update to show or hide app labels in the app drawer. */
+    suspend fun setShouldShowAppDrawerLabels(shouldShowAppDrawerLabels: Boolean)
 }
