@@ -47,6 +47,7 @@ import com.android.customization.picker.color.ui.binder.ColorsFloatingSheetBinde
 import com.android.customization.picker.color.ui.compose.ColorFloatingSheet
 import com.android.customization.picker.color.ui.view.ColorOptionIconView
 import com.android.customization.picker.color.ui.viewmodel.ColorOptionIconViewModel
+import com.android.customization.picker.font.ui.binder.FontFloatingSheetBinder
 import com.android.customization.picker.grid.ui.binder.GridFloatingSheetBinder
 import com.android.customization.picker.icon.ui.binder.AppIconFloatingSheetBinder
 import com.android.customization.picker.icon.ui.binder.ShapeIconViewBinder
@@ -289,6 +290,18 @@ constructor(private val defaultCustomizationOptionsBinder: DefaultCustomizationO
             optionGridIcon = optionGrid.requireViewById(R.id.option_entry_icon)
         }
 
+        var optionFont: View? = null
+        var optionFontDescription: TextView? = null
+        var optionFontPreview: TextView? = null
+        if (customizationOptionsData.isFontCustomizationAvailable) {
+            optionFont =
+                homeScreenCustomizationOptionEntries
+                    .first { it.first == ThemePickerHomeCustomizationOption.FONT }
+                    .second
+            optionFontDescription = optionFont.requireViewById(R.id.option_entry_description)
+            optionFontPreview = optionFont.requireViewById(R.id.option_entry_font_preview)
+        }
+
         val optionColorContrast: View =
             homeScreenCustomizationOptionEntries
                 .first { it.first == ThemePickerHomeCustomizationOption.COLOR_CONTRAST }
@@ -307,6 +320,7 @@ constructor(private val defaultCustomizationOptionsBinder: DefaultCustomizationO
                 if (customizationOptionsData.isGridCustomizationAvailable) {
                     optionGridIcon?.setColorFilter(color)
                 }
+                optionFontPreview?.setTextColor(color)
                 if (BaseFlags.get(view.context).isPackThemeEnabled()) {
                     optionPackThemeIconLockDefault?.setColorFilter(color)
                     optionPackThemeIconHomeDefault?.setColorFilter(color)
@@ -453,6 +467,21 @@ constructor(private val defaultCustomizationOptionsBinder: DefaultCustomizationO
                             ->
                             optionGridDescription?.let { TextViewBinder.bind(it, gridOption.text) }
                             gridOption.payload?.let { optionGridIcon?.setImageDrawable(it) }
+                        }
+                    }
+                }
+
+                if (customizationOptionsData.isFontCustomizationAvailable) {
+                    launch {
+                        optionsViewModel.onCustomizeFontClicked.collect {
+                            optionFont?.setOnClickListener { _ -> it?.invoke() }
+                        }
+                    }
+
+                    launch {
+                        optionsViewModel.fontPickerViewModel.selectedFontOption.collect { font ->
+                            optionFontDescription?.text = font.title
+                            optionFontPreview?.typeface = font.headlineFont
                         }
                     }
                 }
@@ -742,6 +771,16 @@ constructor(private val defaultCustomizationOptionsBinder: DefaultCustomizationO
                     Dispatchers.IO,
                 )
             }
+
+        customizationOptionFloatingSheetViewMap?.get(ThemePickerHomeCustomizationOption.FONT)?.let {
+            FontFloatingSheetBinder.bind(
+                it,
+                optionsViewModel,
+                colorUpdateViewModel,
+                lifecycleOwner,
+                Dispatchers.IO,
+            )
+        }
 
         customizationOptionFloatingSheetViewMap?.get(ThemePickerHomeCustomizationOption.GRID)?.let {
             GridFloatingSheetBinder.bind(

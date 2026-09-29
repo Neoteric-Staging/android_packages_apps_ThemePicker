@@ -34,6 +34,7 @@ import com.android.wallpaper.R
 import com.android.wallpaper.config.BaseFlags
 import com.android.wallpaper.customization.ui.util.ThemePickerCustomizationOptionUtil.ThemePickerHomeCustomizationOption.APP_ICONS
 import com.android.wallpaper.customization.ui.util.ThemePickerCustomizationOptionUtil.ThemePickerHomeCustomizationOption.COLORS
+import com.android.wallpaper.customization.ui.util.ThemePickerCustomizationOptionUtil.ThemePickerHomeCustomizationOption.FONT
 import com.android.wallpaper.customization.ui.util.ThemePickerCustomizationOptionUtil.ThemePickerHomeCustomizationOption.GRID
 import com.android.wallpaper.customization.ui.util.ThemePickerCustomizationOptionUtil.ThemePickerLockCustomizationOption.CLOCK
 import com.android.wallpaper.customization.ui.util.ThemePickerCustomizationOptionUtil.ThemePickerLockCustomizationOption.SHORTCUTS
@@ -133,6 +134,7 @@ constructor(
                             when (it) {
                                 COLORS -> ThemePickerR.string.system_colors_title
                                 GRID -> ThemePickerR.string.grid_layout
+                                FONT -> ThemePickerR.string.preview_name_font
                                 CLOCK -> ThemePickerR.string.clock_title
                                 SHORTCUTS ->
                                     ThemePickerR.string.keyguard_quick_affordance_section_title
